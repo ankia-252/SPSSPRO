@@ -1,13 +1,16 @@
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.preprocessing import MultiLabelBinarizer
 import json
-from setting import save_frequecncyDocument_path,save_EncodeDocument_path,frequecncyDocument,oneHotEncode,Tag,suffix
-import data_Config
-from numpy import array
+from data.PythonAPI.setting import save_frequecncyDocument_path,save_EncodeDocument_path,frequecncyDocument,oneHotEncode,Tag,suffix,oneHotEncode_I
+import data.PythonAPI.data_Config
 
-def words2Set(tag,*poet_lists):
+def encode_And_wordFrequency(tag,*poet_lists):
+    """Encode and frequency analysis
+
+    :param tag: Identify the dynasties
+    :param poet_lists: Poets of every dynasties
+    :return: Null
+    """
     wordDomain = {}
     i = 0
     for poet_list in poet_lists:
@@ -35,23 +38,32 @@ def words2Set(tag,*poet_lists):
     integer_encoded = label_encoder.fit_transform(wordDomain_encode)
     print(integer_encoded)
     print("整数编码完成")
+
     onehot_encoder = OneHotEncoder(sparse=False)
-    wordDomain_encode = array(wordDomain_encode).reshape(-1,1)
-    #integer_encoded = integer_encoded.reshape(len(integer_encoded), 1)
-    onehot_encoded = onehot_encoder.fit_transform(wordDomain_encode)
+    integer_encoded = integer_encoded.reshape(-1, 1)
+    onehot_encoded = onehot_encoder.fit_transform(integer_encoded)
+    print(onehot_encoded)
     print("oneHot 编码完成")
     # 保存编码
     save_onehot = {}
+    save_onehot_asInteger = {}
     j = 0
     for i in onehot_encoded:
         save_onehot[wordDomain[j][0]] = ','.join(str(t) for t in i)
+        save_onehot_asInteger[wordDomain[j][0]] = str(integer_encoded[j][0])
         j += 1
+    print("编码键值对转化完成")
     with open(save_EncodeDocument_path+oneHotEncode,'w',encoding='UTF-8') as f:
         f.write(json.dumps(save_onehot,indent=2,ensure_ascii=False))
         f.close()
+    print("oneHot 编码文件已经保存")
+    with open(save_EncodeDocument_path+oneHotEncode_I,'w',encoding='UTF-8') as f:
+        f.write(json.dumps(save_onehot_asInteger,indent=2,ensure_ascii=False))
+        f.close()
+    print("oneHot 整数文件已经保存")
     print("所有数据已经保存")
 
 
 
 if __name__ == "__main__":
-    words2Set(["song","tang"],data_Config.readJsons_poet("song"),data_Config.readJsons_poet("tang"))
+    encode_And_wordFrequency(["song","tang"],data_Config.readJsons_poet("song"),data_Config.readJsons_poet("tang"))

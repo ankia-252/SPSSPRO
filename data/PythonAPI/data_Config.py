@@ -1,9 +1,13 @@
+#文件读取模块，用于提供读取Json文件的函数
+#readJson_poet: 用于读取诗词文件
+#readJson_author: 用于读取作者
+
 import json
 
 # 读取json文件
 
 # setting
-from setting import *
+from data.PythonAPI.setting import *
 
 
 def __readJson(fileName:str)->list:
