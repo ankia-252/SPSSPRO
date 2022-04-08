@@ -1,18 +1,9 @@
 import json
-import sys
-sys.path.append("..")
-import setting.setting
+
 # 读取json文件
 
 # setting
-poetKey = ("author","paragraphs","title","id")
-authorKey = ("desc","name","id")
-path = "../json/" # 路径
-path_song = "poet.song."
-path_tang = "poet.tang."
-tang_nums = 58000
-song_nums = 255000
-step = 1000
+from setting import *
 
 
 def __readJson(fileName:str)->list:
@@ -23,7 +14,9 @@ def __readJson(fileName:str)->list:
     '''
     try:
         with open(fileName,'r',encoding='UTF-8') as f:
-            return json.load(f) # return a list(dict)
+            returnList = json.load(f) # return a list(dict)
+            f.close()
+            return returnList
     except:
         raise OSError("File Open Error")
 
