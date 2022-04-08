@@ -20,11 +20,7 @@ def __readJson(fileName:str)->list:
     '''
     try:
         with open(fileName,'r',encoding='UTF-8') as f:
-            temp = json.load(f)
-            returnList = []
-            for i in temp:
-                returnList.append(dict(i))
-            return returnList
+            return json.load(f) # return a list(dict)
     except:
         raise OSError("File Open Error")
 
@@ -38,8 +34,9 @@ def readJsons_poet(songOrtang,filePath:str = path):
     assert songOrtang == "song" or songOrtang == 'tang',"ValueError"
     returnList = []
     maxRnge = tang_nums if songOrtang == "tang" else song_nums
+    path_open = path_tang if songOrtang == "tang" else path_song
     for i in range(0,maxRnge,step):
-        returnList = returnList + __readJson(path+path_song+str(i)+".json")
+        returnList = returnList + __readJson(path+path_open+str(i)+".json")
     return returnList
 
 def readJsons_author(songOrtang,filePath:str = path):
@@ -53,4 +50,6 @@ def readJsons_author(songOrtang,filePath:str = path):
     return __readJson(path+"authors."+songOrtang+".json")
 
 if __name__ == "__main__":
-    f = readJsons_author("tang")
+    f = readJsons_poet("tang")
+    for i in f:
+        print(i)
