@@ -1,9 +1,12 @@
 import json
+import sys
+sys.path.append("..")
+import setting.setting
 # 读取json文件
 
 # setting
-poetKey = ["author","paragraphs","title","id"]
-authorKey = ["desc","name","id"]
+poetKey = ("author","paragraphs","title","id")
+authorKey = ("desc","name","id")
 path = "../json/" # 路径
 path_song = "poet.song."
 path_tang = "poet.tang."
@@ -51,5 +54,5 @@ def readJsons_author(songOrtang,filePath:str = path):
 
 if __name__ == "__main__":
     f = readJsons_poet("tang")
-    for i in f:
-        print(i)
+    print(f[0]["paragraphs"])
+    print(sorted(f[0]["paragraphs"][0]))
